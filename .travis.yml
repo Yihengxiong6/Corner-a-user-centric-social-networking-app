@@ -1,0 +1,38 @@
+branches:
+  except:
+  - dev-branch
+# safelist
+  only:
+  - main
+  - testBranch
+
+
+language: node_js
+node_js:
+  - "14"
+
+jobs:
+  include:
+    - stage: ClientLint, ServerLint, ClientTest, ServerTest, Build
+      name: ClientLint
+      script:
+        - cd client
+        - npm install
+        - npm run lint
+    - name: ServerLint
+      script:
+        - npm install
+        - npm run lint
+    - name: ClientTest
+      script:
+        - cd client
+        - npm install
+        - CI=true npm test
+    - name: ServerTest
+      script:
+        - npm install
+        - CI=true npm test
+    - name: Build
+      script:
+        - npm install
+        - CI=false npm run build
